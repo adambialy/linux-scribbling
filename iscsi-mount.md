@@ -1,9 +1,10 @@
-1. install shizzle
-==================
-apt-get install multipath-tools open-iscsi -y
+## 1. install shizzle
 
-2. run discovery
-================
+```
+apt-get install multipath-tools open-iscsi -y
+```
+
+## 2. run discovery
 
 ```
 # iscsiadm -m discovery -t st -p 192.168.14.100
@@ -17,11 +18,11 @@ apt-get install multipath-tools open-iscsi -y
 192.168.14.103:3260,8 iqn.1988-11.com.dell:01.array.bc305bf24f7d
 ```
 
-3. tweak multipath.conf
-=======================
+## 3. tweak multipath.conf
 
 multipath.conf
 
+```
 defaults {
     udev_dir        /dev
     polling_interval 10
@@ -56,7 +57,7 @@ devices {
         features                "0"
     }
 }
-
+```
 
 
 section for dell
@@ -77,15 +78,13 @@ section for dell
     }
 ```
  
-4. accept request from `grep -v "#" /etc/iscsi/initiatorname.iscsi
-==================================================================
+## 4. accept request from `grep -v "#" /etc/iscsi/initiatorname.iscsi
 
 ```
 InitiatorName=iqn.2004-10.com.ubuntu:01:4f598a60af82
 ```
 
-5. enable things
-================
+## 5. enable things
 
 ```
 systemctl restart open-iscsi.service 
@@ -96,7 +95,7 @@ systemctl restart multipathd
 systemctl restart multipath-tools.service
 ```
 
-6. iscsid.conf:
+## 6. iscsid.conf:
 
 ```
 node.startup = automatic
@@ -104,8 +103,7 @@ node.leading_login = No
 ```
 
 
-7. configure interface
-======================
+## 7. configure interface
 
 ```
 iscsiadm -m iface -I ens192 --op=new
@@ -147,8 +145,7 @@ figure out uuid with blkid, and add to fstab
 /dev/disk/by-uuid/c23abb69-d6b9-4bc7-885f-88a637893b68 /mnt/iscsi ext4 defaults 0 2
 ```
 
-8. systemctl automount
-======================
+## 8. systemctl automount
 
 
 /etc/systemd/system/mnt-iscsi.mount:
@@ -192,8 +189,7 @@ systemctl enable mnt-iscsi.automount
 systemctl enable mnt-iscsi.mount 
 ```
 
-Links
-=====
+## Links
 
 https://github.com/f1linux/iscsi-automount
 
